@@ -13,7 +13,7 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <a class="navbar-brand" href="#">Perpustakaan MANTAP</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -23,12 +23,12 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="index.php">Home </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="books.php">Books</a>
+                    <a class="nav-link" href="index.php">Home</a>
                 </li>
                 <li class="nav-item active">
+                    <a class="nav-link" href="books.php">Books</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="visitor.php">Visitors</a>
                 </li>
                 <li class="nav-item">
@@ -43,40 +43,44 @@
     <div class="container">
         <div class="row pt-5">
             <div class="col-12 pt-3">
-                <h1 class="text-center">Visitor List</h1>
+                <h1 class="text-center">Books Data</h1>
             </div>
             <button type="button" class="btn btn-outline-secondary">Add</button>
             <table class="table mt-3">
                 <thead>
                     <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Date</th>
-                        <th scope="col">Time</th>
-                        <th scope="col">Visitor Name</th>
+                        <th scope="col">ISBN</th>
+                        <th scope="col">Judul</th>
+                        <th scope="col">Penulis</th>
+                        <th scope="col">Penerbit</th>
+                        <th scope="col">Kategori</th>
                         <th scope="col">Detail</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <th scope="row">1</th>
-                        <td>21/11/2020</td>
-                        <td>19.08</td>
+                        <td>Mencari Cinta</td>
                         <td>Mark Otto</td>
-                        <td><a type="button" href= "detailVisitor.php" class="btn btn-primary btn-sm">Detail</button></td>
+                        <td>Vinz</td>
+                        <td>Romance</td>
+                        <td><button type="button" class="btn btn-primary btn-sm">Detail</button></td>
                     </tr>
                     <tr>
                         <th scope="row">2</th>
-                        <td>21/11/2020</td>
-                        <td>19.09</td>
+                        <td>Kisah Cinta</td>
                         <td>Jacob Thornton</td>
-                        <td><a type="button" href= "detailVisitor.php" class="btn btn-primary btn-sm">Detail</button></td>
+                        <td>CC</td>
+                        <td>Romance</td>
+                        <td><button type="button" class="btn btn-primary btn-sm">Detail</button></td>
                     </tr>
                     <tr>
                         <th scope="row">3</th>
-                        <td>21/11/2020</td>
-                        <td>19.10</td>
+                        <td>Arti Cinta</td>
                         <td>Larry Bird</td>
-                        <td><a type="button" href= "detailVisitor.php" class="btn btn-primary btn-sm">Detail</button></td>
+                        <td>Vins</td>
+                        <td>Romance</td>
+                        <td><button type="button" class="btn btn-primary btn-sm">Detail</button></td>
                     </tr>
                 </tbody>
             </table>
