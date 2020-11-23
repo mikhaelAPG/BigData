@@ -6,10 +6,10 @@
     $client = (new MongoDB\Client);
 
     // echo "success";
-    $perpus = $client->Perpustakaan;
+    // $perpus = $client->Perpustakaan;
     // composer require mongodb/mongodb
 
-    $result = $perpus->createCollection('visitors');
+    /* $result = $perpus->createCollection('visitors');
     $result2 = $perpus->createCollection('books');
     $result3 = $perpus->createCollection('borrowers');
 
@@ -22,6 +22,6 @@
     $insertManyResult = $result->insertMany([
         [],
         []
-    ]);
+    ]); */
 
 ?>
