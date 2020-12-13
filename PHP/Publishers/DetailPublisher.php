@@ -34,9 +34,9 @@ $publisher = $db->getDataPublisher($_GET['nama']);
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div class="navbar-nav">
                     <a class="nav-item nav-link" href="../Books/ListofBooks.php">Buku</a>
-                    <a class="nav-item nav-link" href="../Pengunjung/visitor.php">Pengunjung</a>
-                    <a class="nav-item nav-link" href="../Pinjaman/borrowes.php">Pinjaman</a>
-                    <a class="nav-item nav-link active" href="publisher.php">Publisher</a>
+                    <a class="nav-item nav-link" href="../Visitor/Visitors.php">Pengunjung</a>
+                    <a class="nav-item nav-link" href="../Borrowers/Borrowers.php">Pinjaman</a>
+                    <a class="nav-item nav-link active" href="Publishers.php">Publisher</a>
                 </div>
             </div>
         </div>
@@ -95,7 +95,7 @@ $publisher = $db->getDataPublisher($_GET['nama']);
                 <table class="table mt-3 table-borderless">
 
                     <?php
-                    $cursor = $db->findBook();
+                    $cursor = $db->getListBook();
                     $i = 0;
 
                     if (isset($cursor)) :

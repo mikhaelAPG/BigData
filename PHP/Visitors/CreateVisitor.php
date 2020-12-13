@@ -1,5 +1,6 @@
 <?php
 require_once '../../Database/MongodbDatabase.php';
 $db = new MongodbDatabase();
-$db->newBorrowers();
-header("Location: borrowes.php");
+$db->newVisitor();
+
+header("Location: Visitors.php");

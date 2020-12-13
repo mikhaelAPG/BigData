@@ -22,7 +22,7 @@ class MongodbDatabase
         );
     }
 
-    public function getDataPenerbit()
+    public function fetchDataPublisher()
     {
         return $this->db->Penerbit->find();
     }
@@ -87,30 +87,30 @@ class MongodbDatabase
         Flasher::setFlash('Data buku berhasil', 'ditambahkan', 'success');
     }
 
-    public function insertPenerbit($penerbit = [])
+    public function insertPublisher($publisher = [])
     {
-        if (empty($penerbit)) {
+        if (empty($publisher)) {
             return false;
         }
 
         $document = [
-            'nama' => $penerbit['nama'],
-            'jalan' => $penerbit['jalan'],
-            'kota' => $penerbit['kota'],
-            'email' => $penerbit['email'],
+            'nama' => $publisher['nama'],
+            'jalan' => $publisher['jalan'],
+            'kota' => $publisher['kota'],
+            'email' => $publisher['email'],
         ];
 
-        if ($penerbit['lokasi'] != '') {
-            $document['lokasi'] = $penerbit['lokasi'];
+        if ($publisher['lokasi'] != '') {
+            $document['lokasi'] = $publisher['lokasi'];
         }
-        if ($penerbit['telepon'] != '') {
-            $document['telepon'] = $penerbit['telepon'];
+        if ($publisher['telepon'] != '') {
+            $document['telepon'] = $publisher['telepon'];
         }
-        if ($penerbit['kode_pos'] != '') {
-            $document['kode_pos'] = $penerbit['kode_pos'];
+        if ($publisher['kode_pos'] != '') {
+            $document['kode_pos'] = $publisher['kode_pos'];
         }
-        if ($penerbit['website'] != '') {
-            $document['website'] = $penerbit['website'];
+        if ($publisher['website'] != '') {
+            $document['website'] = $publisher['website'];
         }
 
         $insert = $this->db->Penerbit->insertOne($document);
@@ -124,9 +124,9 @@ class MongodbDatabase
             return false;
         }
 
-        $penerbit = $this->getDataBookByISBN($book['isbn']);
+        $publisher = $this->getDataBookByISBN($book['isbn']);
 
-        if ($penerbit[0]->nama != $book['penerbit']) {
+        if ($publisher[0]->nama != $book['penerbit']) {
             $this->db->Penerbit->updateOne(
                 ['nama' => $book['penerbit']],
                 ['$push' => ['buku' => [
@@ -135,7 +135,7 @@ class MongodbDatabase
             );
 
             $this->db->Penerbit->updateOne(
-                ['nama' => $penerbit[0]->nama],
+                ['nama' => $publisher[0]->nama],
                 ['$pull' => ['buku' => ['isbn' => $book['isbn']]]]
             );
         }
@@ -186,12 +186,18 @@ class MongodbDatabase
         Flasher::setFlash('Data berhasil', 'dihapus', 'danger');
     }
 
-    public function insertNewCategory($kategori)
+    public function insertNewCategory($category)
     {
         return $this->db->Buku->insertOne(
-            ['kategori' => $kategori]
+            ['kategori' => $category]
         );
     }
+
+    public function getDataPublisher()
+    {
+        return $this->db->Penerbit->findOne(['nama' => $_GET['nama']]);
+    }
+    
     //============================================================================================================================
     //Operasi Visitor
     //============================================================================================================================
@@ -204,9 +210,9 @@ class MongodbDatabase
     {
         $collection = $this->db->Pengunjung;
 
-        $kodepos = str_replace(' ', '', $_POST['pos']);
+        $zip = str_replace(' ', '', $_POST['pos']);
         $email = str_replace(' ', '', $_POST['email']);
-        $pekerjaan = str_replace(' ', '', $_POST['pekerjaan']);
+        $profession = str_replace(' ', '', $_POST['pekerjaan']);
 
         $document = [
             'nama' => $_POST['nama'],
@@ -219,39 +225,34 @@ class MongodbDatabase
             ],
         ];
 
-        if ($kodepos != '') {
+        if ($zip != '') {
             $document['alamat']['kode_pos'] = $_POST['pos'];
         }
         if ($email != '') {
             $document['kontak']['email'] = $_POST['email'];
         }
-        if ($pekerjaan != '') {
+        if ($profession != '') {
             $document['pekerjaan'] = $_POST['pekerjaan'];
         }
 
-        $pengunjung = $this->getDataVisitor($_POST['nik_old']);
+        $visitor = $this->getDataVisitor($_POST['nik_old']);
 
-        if (isset($pengunjung->kontak->email) && $email == '') {
+        if (isset($visitor->kontak->email) && $email == '') {
             unset($document['kontak']['email']);
         }
-        if (isset($pengunjung->kontak->kode_pos) && $kodepos == '') {
+        if (isset($visitor->kontak->kode_pos) && $zip == '') {
             unset($document['alamat']['pos']);
         }
-        if (isset($pengunjung->pekerjaan) && $pekerjaan == '') {
+        if (isset($visitor->pekerjaan) && $profession == '') {
             unset($document['pekerjaan']);
         }
-
-        // var_dump($pengunjung->pekerjaan);
-        // var_dump($pekerjaan);
-        // var_dump($document);
-        // die();
 
         $collection->updateOne(
             ['NIK' =>  $_POST['nik_old']],
             ['$set' => $document]
         );
 
-        Flasher::setFlash('Data ' . $pengunjung->nama . ' berhasil', "diupdate", "success");
+        Flasher::setFlash('Data ' . $visitor->nama . ' berhasil', "diupdate", "success");
     }
 
     public function getDataVisitor($nik)
@@ -309,34 +310,4 @@ class MongodbDatabase
         );
         Flasher::setFlash('Peminjaman Buku', 'berhasil', 'success');
     }
-
-    //============================================================================================================================
-    //Operasi Publisher
-    //============================================================================================================================
-    public function fetchDataPublisher()
-    {
-        return $this->db->Penerbit->find();
-    }
-
-    public function getDataPublisher()
-    {
-        return $this->db->Penerbit->findOne(['nama' => $_GET['nama']]);
-    }
-
-    public function findBook()
-    {
-        return $this->db->Penerbit->find(
-            ['buku' => ['$exists' => true]]
-        );
-    }
 }
-
-// $client = new MongoDB\Client;
-// $perpusdb = $client->perpusdb;
-// $penerbitCollection = $perpusdb->Penerbit;
-
-// $temp = $penerbitCollection->findOne(
-//     ['nama' => 'PT Elex Media Komputindo']
-// );
-
-// var_dump($temp->buku->kategori);

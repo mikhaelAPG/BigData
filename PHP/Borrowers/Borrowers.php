@@ -35,9 +35,9 @@ $collection = $db->fetchDataVisitor();
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div class="navbar-nav">
                     <a class="nav-item nav-link" href="../Books/ListofBooks.php">Buku</a>
-                    <a class="nav-item nav-link" href="../Pengunjung/visitor.php">Pengunjung</a>
-                    <a class="nav-item nav-link active" href="borrowes.php">Pinjaman</a>
-                    <a class="nav-item nav-link" href="../Publisher/publisher.php">Penerbit</a>
+                    <a class="nav-item nav-link" href="../Visitors/Visitors.php">Pengunjung</a>
+                    <a class="nav-item nav-link active" href="Borrowers.php">Pinjaman</a>
+                    <a class="nav-item nav-link" href="../Publishers/Publishers.php">Penerbit</a>
                 </div>
             </div>
         </div>
@@ -67,16 +67,16 @@ $collection = $db->fetchDataVisitor();
                     <tbody>
                         <?php
                         $i = 1;
-                        foreach ($collection as $pengunjung) {
-                            if (isset($pengunjung->pinjam)) {
-                                foreach ($pengunjung->pinjam as $pinjaman) {
+                        foreach ($collection as $visitor) {
+                            if (isset($visitor->pinjam)) {
+                                foreach ($visitor->pinjam as $borrower) {
                                     echo "
                                     <tr>
                                         <th scope='row'>" . $i++ . "</th>
-                                        <td>" . date('d F Y', strtotime($pinjaman->tanggal_pinjam)) . "</td>
-                                        <td>" . date('d F Y', strtotime($pinjaman->tanggal_kembali)) . "</td>
-                                        <td>" . $pengunjung->nama . "</td>
-                                        <td>" . $pinjaman->judul . "</td>
+                                        <td>" . date('d F Y', strtotime($borrower->tanggal_pinjam)) . "</td>
+                                        <td>" . date('d F Y', strtotime($borrower->tanggal_kembali)) . "</td>
+                                        <td>" . $visitor->nama . "</td>
+                                        <td>" . $borrower->judul . "</td>
                                     </tr>";
                                 }
                             }

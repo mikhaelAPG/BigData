@@ -4,7 +4,7 @@ require '../../Database/MongodbDatabase.php';
 
 $db = new MongodbDatabase;
 $isbn = $_GET['isbn'];
-$penerbit = $db->getDataBookByISBN($isbn);
+$publisher = $db->getDataBookByISBN($isbn);
 
 ?>
 
@@ -22,7 +22,7 @@ $penerbit = $db->getDataBookByISBN($isbn);
     <link rel="stylesheet" href="../../CSS/Navigation.css">
     <link rel="stylesheet" href="../Font/fonts.css">
 
-    <title> <?php $penerbit[0]->buku[0]->judul ?> </title>
+    <title> <?php $publisher[0]->buku[0]->judul ?> </title>
 </head>
 
 <body>
@@ -39,17 +39,17 @@ $penerbit = $db->getDataBookByISBN($isbn);
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div class="navbar-nav">
                     <a class="nav-item nav-link active" href="ListofBooks.php">Buku</a>
-                    <a class="nav-item nav-link" href="../Pengunjung/visitor.php">Pengunjung</a>
-                    <a class="nav-item nav-link" href="../Pinjaman/borrowes.php">Pinjaman</a>
-                    <a class="nav-item nav-link" href="../Publisher/publisher.php">Penerbit</a>
+                    <a class="nav-item nav-link" href="../Visitors/Visitors.php">Pengunjung</a>
+                    <a class="nav-item nav-link" href="../Borrowers/Borrowers.php">Pinjaman</a>
+                    <a class="nav-item nav-link" href="../Publishers/Publishers.php">Penerbit</a>
                 </div>
             </div>
         </div>
     </nav>
 
     <div class="container">
-        <h1 class="text-white"><?= $penerbit[0]->buku[0]->judul ?></h1>
-        <iframe src="data:application/pdf;base64,<?= base64_encode($penerbit[0]->buku[0]->pdf->getData()) ?>" width="100%" height="500px">
+        <h1 class="text-white"><?= $publisher[0]->buku[0]->judul ?></h1>
+        <iframe src="data:application/pdf;base64,<?= base64_encode($publisher[0]->buku[0]->pdf->getData()) ?>" width="100%" height="500px">
         </iframe>
     </div>
 

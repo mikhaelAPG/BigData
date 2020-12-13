@@ -3,8 +3,8 @@ require '../../Database/MongodbDatabase.php';
 
 $db = new MongodbDatabase;
 $isbn = $_GET['isbn'];
-$penerbit = $db->getDataBookByISBN($isbn);
-$image = base64_encode($penerbit[0]->buku[0]->img->getData());
+$publisher = $db->getDataBookByISBN($isbn);
+$image = base64_encode($publisher[0]->buku[0]->img->getData());
 
 
 ?>
@@ -41,9 +41,9 @@ $image = base64_encode($penerbit[0]->buku[0]->img->getData());
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
           <a class="nav-item nav-link active" href="ListofBooks.php">Buku</a>
-          <a class="nav-item nav-link" href="../Pengunjung/visitor.php">Pengunjung</a>
-          <a class="nav-item nav-link" href="../Pinjaman/borrowes.php">Pinjaman</a>
-          <a class="nav-item nav-link" href="../Publisher/publisher.php">Penerbit</a>
+          <a class="nav-item nav-link" href="../Visitors/Visitors.php">Pengunjung</a>
+          <a class="nav-item nav-link" href="../Borrowers/Borrowers.php">Pinjaman</a>
+          <a class="nav-item nav-link" href="../Publishers/Publishers.php">Penerbit</a>
         </div>
       </div>
     </div>
@@ -57,27 +57,27 @@ $image = base64_encode($penerbit[0]->buku[0]->img->getData());
           </div>
           <div class="col-md-8">
             <div class="card-body">
-              <h2 class="card-title"><?= $penerbit[0]->buku[0]->judul ?></h2>
-              <h5><?= $penerbit[0]->buku[0]->isbn ?></h5>
-              <p class="card-text"><b>Kategori:</b> <?= $penerbit[0]->buku[0]->kategori ?></p>
-              <p class="card-text"><b>Penerbit:</b> <?= $penerbit[0]->buku[0]->penerbit ?></p>
-              <p class="card-text"><b>Tebal Halaman:</b> <?= $penerbit[0]->buku[0]->tebal_buku ?></p>
-              <p class="card-text"><b>Deskripsi:</b> <?= $penerbit[0]->buku[0]->deskripsi ?></p>
-              <?php if (count($penerbit[0]->buku[0]->penulis) == 1) :  ?>
-                <p class="card-text"><b>Penulis:</b> <?= $penerbit[0]->buku[0]->penulis[0]; ?></p>
+              <h2 class="card-title"><?= $publisher[0]->buku[0]->judul ?></h2>
+              <h5><?= $publisher[0]->buku[0]->isbn ?></h5>
+              <p class="card-text"><b>Kategori:</b> <?= $publisher[0]->buku[0]->kategori ?></p>
+              <p class="card-text"><b>Penerbit:</b> <?= $publisher[0]->buku[0]->penerbit ?></p>
+              <p class="card-text"><b>Tebal Halaman:</b> <?= $publisher[0]->buku[0]->tebal_buku ?></p>
+              <p class="card-text"><b>Deskripsi:</b> <?= $publisher[0]->buku[0]->deskripsi ?></p>
+              <?php if (count($publisher[0]->buku[0]->penulis) == 1) :  ?>
+                <p class="card-text"><b>Penulis:</b> <?= $publisher[0]->buku[0]->penulis[0]; ?></p>
               <?php else : ?>
                 <p class="card-text"><b>Penulis:</b></p>
                 <ul>
-                  <?php foreach ($penerbit[0]->buku[0]->penulis as $penulis) : ?>
-                    <li><?= $penulis ?></li>
+                  <?php foreach ($publisher[0]->buku[0]->penulis as $writer) : ?>
+                    <li><?= $writer ?></li>
                   <?php endforeach; ?>
                 </ul>
               <?php endif; ?>
               <div class="row justify-content-center pt-2 pb-3">
-                <a class="btn btn-outline-primary btn-sml mr-2" href="Read.php?isbn=<?= $penerbit[0]->buku[0]->isbn ?>" role="button">Read</a>
-                <a class="btn btn-outline-success btn-sml ml-2 mr-2" href="Edit.php?isbn=<?= $penerbit[0]->buku[0]->isbn ?>" role="button">Edit</a>
+                <a class="btn btn-outline-primary btn-sml mr-2" href="Read.php?isbn=<?= $publisher[0]->buku[0]->isbn ?>" role="button">Read</a>
+                <a class="btn btn-outline-success btn-sml ml-2 mr-2" href="Edit.php?isbn=<?= $publisher[0]->buku[0]->isbn ?>" role="button">Edit</a>
                 <form action="Delete.php" method="POST">
-                  <input type="hidden" name="isbn" value="<?= $penerbit[0]->buku[0]->isbn ?>">
+                  <input type="hidden" name="isbn" value="<?= $publisher[0]->buku[0]->isbn ?>">
                   <button type="submit" class="btn btn-outline-danger btn-sml ml-2">Delete</button>
                 </form>
               </div>

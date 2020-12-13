@@ -1,7 +1,7 @@
 <?php
 require '../../Database/MongodbDatabase.php';
 $db = new MongodbDatabase;
-$pengunjung = $db->getDataVisitor($_GET['nik']);
+$visitor = $db->getDataVisitor($_GET['nik']);
 
 ?>
 <!doctype html>
@@ -34,9 +34,9 @@ $pengunjung = $db->getDataVisitor($_GET['nik']);
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div class="navbar-nav">
                     <a class="nav-item nav-link" href="../Books/ListofBooks.php">Buku</a>
-                    <a class="nav-item nav-link active" href="visitor.php">Pengunjung</a>
-                    <a class="nav-item nav-link" href="../Pinjaman/borrowes.php">Pinjaman</a>
-                    <a class="nav-item nav-link" href="../Publisher/publisher.php">Penerbit</a>
+                    <a class="nav-item nav-link active" href="Visitors.php">Pengunjung</a>
+                    <a class="nav-item nav-link" href="../Borrowers/Borrowers.php">Pinjaman</a>
+                    <a class="nav-item nav-link" href="../Publishers/Publishers.php">Penerbit</a>
                 </div>
             </div>
         </div>
@@ -54,25 +54,25 @@ $pengunjung = $db->getDataVisitor($_GET['nik']);
                     <table class="table mt-3 mx-auto w-auto">
                         <tr>
                             <th scope="col">NIK</th>
-                            <?php echo "<td>" . $pengunjung->NIK . "</td>"; ?>
+                            <?php echo "<td>" . $visitor->NIK . "</td>"; ?>
                         </tr>
                         <tr>
                             <th scope="col">Name</th>
-                            <?php echo "<td>" . $pengunjung->nama . "</td>"; ?>
+                            <?php echo "<td>" . $visitor->nama . "</td>"; ?>
                         </tr>
                         <tr>
                             <th scope="col">Address</th>
                             <td>
                                 <ul id="data">
                                     <?php
-                                    if (isset($pengunjung->alamat->jalan)) {
-                                        echo "<li>Jalan: " . $pengunjung->alamat->jalan . "</li>";
+                                    if (isset($visitor->alamat->jalan)) {
+                                        echo "<li>Jalan: " . $visitor->alamat->jalan . "</li>";
                                     }
-                                    if (isset($pengunjung->alamat->kota)) {
-                                        echo "<li>Kota: " . $pengunjung->alamat->kota . "</li>";
+                                    if (isset($visitor->alamat->kota)) {
+                                        echo "<li>Kota: " . $visitor->alamat->kota . "</li>";
                                     }
-                                    if (isset($pengunjung->alamat->kode_pos)) {
-                                        echo "<li>Kode Pos: " . $pengunjung->alamat->kode_pos . "</li>";
+                                    if (isset($visitor->alamat->kode_pos)) {
+                                        echo "<li>Kode Pos: " . $visitor->alamat->kode_pos . "</li>";
                                     }
                                     echo "</ul></td>";
                                     ?>
@@ -82,25 +82,25 @@ $pengunjung = $db->getDataVisitor($_GET['nik']);
                             <td>
                                 <ul id="data">
                                     <?php
-                                    if (isset($pengunjung->kontak->email)) {
-                                        echo "<li>Email: " . $pengunjung->kontak->email . "</li>";
+                                    if (isset($visitor->kontak->email)) {
+                                        echo "<li>Email: " . $visitor->kontak->email . "</li>";
                                     }
-                                    if (isset($pengunjung->kontak->phone)) {
-                                        echo "<li>Phone: " . $pengunjung->kontak->phone . "</li>";
+                                    if (isset($visitor->kontak->phone)) {
+                                        echo "<li>Phone: " . $visitor->kontak->phone . "</li>";
                                     }
                                     echo "</ul></td>";
                                     ?>
                         </tr>
-                        <?php if (isset($pengunjung->pekerjaan)) : ?>
+                        <?php if (isset($visitor->pekerjaan)) : ?>
                             <tr>
                                 <th scope="col">Profession</th>
-                                <td><?= $pengunjung->pekerjaan ?></td>
+                                <td><?= $visitor->pekerjaan ?></td>
                             </tr>
                         <?php endif; ?>
                         <tr>
                             <td colspan="3">
-                                <a href='editVisitor.php?nik=<?= $pengunjung->NIK; ?>' class='btn btn-primary'>Edit</a>
-                                <a href='delete.php?nik=<?= $pengunjung->NIK; ?>' class='btn btn-danger ml-3'>Delete</a><br>
+                                <a href='editVisitor.php?nik=<?= $visitor->NIK; ?>' class='btn btn-primary'>Edit</a>
+                                <a href='delete.php?nik=<?= $visitor->NIK; ?>' class='btn btn-danger ml-3'>Delete</a><br>
                             </td>
                         </tr>
                     </table>
@@ -115,8 +115,8 @@ $pengunjung = $db->getDataVisitor($_GET['nik']);
                     <th>Tanggal Kembali</th>
                 </tr>
                 <?php
-                if (isset($pengunjung->pinjam)) :
-                    foreach ($pengunjung->pinjam as $book) : ?>
+                if (isset($visitor->pinjam)) :
+                    foreach ($visitor->pinjam as $book) : ?>
                         <!-- Ini daftar pinjama bisa banyak, di foreach. Cuman contoh datanya masih belum array, baru single objek -->
                         <tr>
                             <td><?= $book->judul ?></td>

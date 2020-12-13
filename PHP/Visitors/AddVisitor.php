@@ -29,9 +29,9 @@
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div class="navbar-nav">
                     <a class="nav-item nav-link" href="../Books/ListofBooks.php">Buku</a>
-                    <a class="nav-item nav-link active" href="visitor.php">Pengunjung</a>
-                    <a class="nav-item nav-link" href="../Pinjaman/borrowes.php">Pinjaman</a>
-                    <a class="nav-item nav-link" href="../Publisher/publisher.php">Penerbit</a>
+                    <a class="nav-item nav-link active" href="Visitors.php">Pengunjung</a>
+                    <a class="nav-item nav-link" href="../Borrowers/Borrowers.php">Pinjaman</a>
+                    <a class="nav-item nav-link" href="../Publishers/Publishers.php">Penerbit</a>
                 </div>
             </div>
         </div>

@@ -1,7 +1,7 @@
 <?php
 require '../../Database/MongodbDatabase.php';
 $db = new MongodbDatabase;
-$pengunjung = $db->fetchDataVisitor();
+$visitor = $db->fetchDataVisitor();
 $collection = $db->getListBook();
 
 ?>
@@ -33,10 +33,10 @@ $collection = $db->getListBook();
             </button>
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div class="navbar-nav">
-                    <a class="nav-item nav-link" href="ListofBooks.php">Buku</a>
-                    <a class="nav-item nav-link" href="../Pengunjung/visitor.php">Pengunjung</a>
-                    <a class="nav-item nav-link active" href="../Pinjaman/borrowes.php">Pinjaman</a>
-                    <a class="nav-item nav-link" href="../Publisher/publisher.php">Penerbit</a>
+                    <a class="nav-item nav-link" href="../Books/ListofBooks.php">Buku</a>
+                    <a class="nav-item nav-link" href="../Visitors/Visitors.php">Pengunjung</a>
+                    <a class="nav-item nav-link active" href="Borrowers.php">Pinjaman</a>
+                    <a class="nav-item nav-link" href="../Publishers/Publishers.php">Penerbit</a>
                 </div>
             </div>
         </div>
@@ -54,7 +54,7 @@ $collection = $db->getListBook();
                         <label for="NIK">Peminjam</label>
                         <select class="custom-select" id="NIK" required name="nik">
                             <option selected disabled>--Pilih NIK--</option>
-                            <?php foreach ($pengunjung as $p) : ?>
+                            <?php foreach ($visitor as $p) : ?>
                                 <option value="<?= $p->NIK ?>"><?= $p->nama ?>: <?= $p->NIK ?></option>
                             <?php endforeach; ?>
                         </select>
@@ -66,9 +66,9 @@ $collection = $db->getListBook();
                         <select class="custom-select" id="JudulBuku" required name="judulbuku">
                             <option selected disabled value="">--Pilih Buku--</option>
                             <?php
-                            foreach ($collection as $penerbit) {
-                                foreach ($penerbit->buku as $buku) {
-                                    echo "<option value='" . $buku->judul . "'>" . $buku->judul . "</option>";
+                            foreach ($collection as $publisher) {
+                                foreach ($publisher->buku as $book) {
+                                    echo "<option value='" . $book->judul . "'>" . $book->judul . "</option>";
                                 }
                             }
                             ?>
@@ -88,7 +88,7 @@ $collection = $db->getListBook();
                 </div>
 
                 <button class="btn btn-primary justify-content-end" style="float: right;margin-left: 20px" type="submit">Add</button>
-                <a type="button" href="borrowes.php" style="float: right" class="btn btn-outline-warning">Back</a>
+                <a type="button" href="Borrowers.php" style="float: right" class="btn btn-outline-warning">Back</a>
         </div>
         </form>
 

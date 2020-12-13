@@ -3,12 +3,12 @@ require '../../Database/MongodbDatabase.php';
 
 $db = new MongodbDatabase;
 $isbn = $_GET['isbn'];
-$penerbit = $db->getDataBookByISBN($isbn);
-$kategori = $db->getCategory();
-$collection = $db->getDataPenerbit();
+$publisher = $db->getDataBookByISBN($isbn);
+$category = $db->getCategory();
+$collection = $db->fetchDataPublisher();
 
 if (!empty($_POST['judul'])) {
-    $hasil = $db->updateBook([
+    $result = $db->updateBook([
         'isbn' => $_GET['isbn'],
         'judul' => $_POST['judul'],
         'deskripsi' => $_POST['deskripsi'],
@@ -56,9 +56,9 @@ if (!empty($_POST['judul'])) {
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div class="navbar-nav">
                     <a class="nav-item nav-link active" href="ListofBooks.php">Buku</a>
-                    <a class="nav-item nav-link" href="../Pengunjung/visitor.php">Pengunjung</a>
-                    <a class="nav-item nav-link" href="../Pinjaman/borrowes.php">Pinjaman</a>
-                    <a class="nav-item nav-link" href="../Publisher/publisher.php">Penerbit</a>
+                    <a class="nav-item nav-link" href="../Visitors/Visitors.php">Pengunjung</a>
+                    <a class="nav-item nav-link" href="../Borrowers/Borrowers.php">Pinjaman</a>
+                    <a class="nav-item nav-link" href="../Publishers/Publishers.php">Penerbit</a>
                 </div>
             </div>
         </div>
@@ -75,22 +75,23 @@ if (!empty($_POST['judul'])) {
 
                     <div class="col-md-6 mb-3">
                         <label for="ISBN">ISBN*</label>
-                        <input type="text" class="form-control" id="ISBN" name="isbn" disabled value="<?php echo $penerbit[0]->buku[0]->isbn ?>" required>
+                        <input type="text" class="form-control" id="ISBN" name="isbn" disabled value="<?php echo $publisher[0]->buku[0]->isbn ?>" required>
                     </div>
 
                     <div class="col-md-6 mb-3">
                         <label for="Judul">Judul*</label>
-                        <input type="text" class="form-control" id="Judul" name="judul" value="<?php echo $penerbit[0]->buku[0]->judul ?>" required>
+                        <input type="text" class="form-control" id="Judul" name="judul" value="<?php echo $publisher[0]->buku[0]->judul ?>" required>
                     </div>
 
                     <div class="col-md-6 mb-3">
                         <label for="Deskripsi">Deskripsi</label>
-                        <input type="text" class="form-control" id="Deskripsi" name="deskripsi" value="<?php
-                                                                                                        if ($penerbit[0]->buku[0]->deskripsi != null) {
-                                                                                                            echo $penerbit[0]->buku[0]->deskripsi;
-                                                                                                        }
+                        <input type="text" class="form-control" id="Deskripsi" name="deskripsi" value="
+                        <?php
+                            if ($publisher[0]->buku[0]->deskripsi != null) {
+                                echo $publisher[0]->buku[0]->deskripsi;
+                            }
 
-                                                                                                        ?>">
+                        ?>">
                     </div>
 
                     <div class="col-md-6 mb-3">
@@ -100,47 +101,47 @@ if (!empty($_POST['judul'])) {
 
                     <div class="col-md-6 mb-3">
                         <label for="Translator">Alih Bahasa</label>
-                        <input type="text" class="form-control" id="Translator" name="translator" value="<?php
-                                                                                                            if (isset($penerbit[0]->buku[0]->alih_bahasa)) {
-                                                                                                                echo $penerbit[0]->buku[0]->alih_bahasa;
-                                                                                                            }
-                                                                                                            ?>">
-
+                        <input type="text" class="form-control" id="Translator" name="translator" value="
+                        <?php
+                            if (isset($publisher[0]->buku[0]->alih_bahasa)) {
+                                echo $publisher[0]->buku[0]->alih_bahasa;
+                            }
+                        ?>">
                     </div>
 
                     <div class="col-md-6 mb-3">
                         <label for="Tbl">Tebal Buku*</label>
-                        <input type="number" class="form-control" id="Tbl" name="tbl" value="<?php echo $penerbit[0]->buku[0]->tebal_buku ?>" required>
+                        <input type="number" class="form-control" id="Tbl" name="tbl" value="<?php echo $publisher[0]->buku[0]->tebal_buku ?>" required>
                     </div>
 
                     <div class="col-md-3 mb-3">
                         <label for="Kategori">Penerbit*</label>
                         <select class="custom-select" id="Penerbit" name="penerbit" required>
-                            <option value="<?php echo $penerbit[0]->nama ?>"><?php echo $penerbit[0]->nama ?></option>
+                            <option value="<?php echo $publisher[0]->nama ?>"><?php echo $publisher[0]->nama ?></option>
                             <?php
-                            foreach ($collection as $p) {
-                                echo '<option>' . $p->nama . '</option>';
+                            foreach ($collection as $publish) {
+                                echo '<option>' . $ppublish->nama . '</option>';
                             }
                             ?>
                         </select>
                     </div>
                     <div class="col-md-3 mb-3">
                         <label for="Kategori">Kategori*</label>
-                        <input type="text" class="form-control" id="kategori" name="kategori" value="<?php echo $penerbit[0]->buku[0]->kategori ?>" required>
+                        <input type="text" class="form-control" id="kategori" name="kategori" value="<?php echo $publisher[0]->buku[0]->kategori ?>" required>
                     </div>
                     <div class="col-md-6 mb-3">
                         <label for="pdf">PDF</label>
                         <input type="file" class="form-control" id="pdf" name="pdf">
                     </div>
                     <?php $i = 1;
-                    foreach ($penerbit[0]->buku[0]->penulis as $penulis) : ?>
+                    foreach ($publisher[0]->buku[0]->penulis as $writer) : ?>
                         <div class="col-md-4 mb-3">
                             <label for="Penulis<?= $i; ?> "><?php if ($i == 1) {
                                                                 echo "Penulis 1*";
                                                             } else {
                                                                 echo "Penulis " . $i;
                                                             } ?></label>
-                            <input type="text" class="form-control" id="Penulis<?= $i; ?>" name="penulis<?= $i; ?>" value="<?= $penulis ?>" <?php if ($i == 1) {
+                            <input type="text" class="form-control" id="Penulis<?= $i; ?>" name="penulis<?= $i; ?>" value="<?= $writer ?>" <?php if ($i == 1) {
                                                                                                                                                 echo "required";
                                                                                                                                             } ?>>
                         </div>

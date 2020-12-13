@@ -1,20 +1,20 @@
 <?php
 require '../../Database/MongodbDatabase.php';
 $db = new MongodbDatabase;
-$pengunjung = $db->getDataVisitor($_GET['nik']);
+$visitor = $db->getDataVisitor($_GET['nik']);
 
-$kodepos = '';
+$zip = '';
 $email = '';
-$pekerjaan = '';
+$profession = '';
 
-if (isset($pengunjung->alamat->kode_pos)) {
-    $kodepos = $pengunjung->alamat->kode_pos;
+if (isset($visitor->alamat->kode_pos)) {
+    $zip = $visitor->alamat->kode_pos;
 }
-if (isset($pengunjung->kontak->email)) {
-    $email = $pengunjung->kontak->email;
+if (isset($visitor->kontak->email)) {
+    $email = $visitor->kontak->email;
 }
-if (isset($pengunjung->pekerjaan)) {
-    $pekerjaan = $pengunjung->pekerjaan;
+if (isset($visitor->pekerjaan)) {
+    $profession = $visitor->pekerjaan;
 }
 
 ?>
@@ -49,39 +49,39 @@ if (isset($pengunjung->pekerjaan)) {
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div class="navbar-nav">
                     <a class="nav-item nav-link" href="../Books/ListofBooks.php">Buku</a>
-                    <a class="nav-item nav-link active" href="visitor.php">Pengunjung</a>
-                    <a class="nav-item nav-link" href="../Pinjaman/borrowes.php">Pinjaman</a>
-                    <a class="nav-item nav-link" href="../Publisher/publisher.php">Penerbit</a>
+                    <a class="nav-item nav-link active" href="Visitors.php">Pengunjung</a>
+                    <a class="nav-item nav-link" href="../Borrowers/Borrowers.php">Pinjaman</a>
+                    <a class="nav-item nav-link" href="../Publishers/Publishers.php">Penerbit</a>
                 </div>
             </div>
         </div>
     </nav>
     <div class="container">
         <div class="row pt-5">
-            <a type="button" href="detailVisitor.php?nik=<?= $pengunjung->NIK ?>" class="btn btn-outline-secondary">Back</a>
+            <a type="button" href="detailVisitor.php?nik=<?= $visitor->NIK ?>" class="btn btn-outline-secondary">Back</a>
             <div class="col-12 pt-3">
                 <h1 class="text-center mb-5">Edit Visitor Data</h1>
                 <form class="w-50 ml-auto mr-auto" action="edit.php" method="POST">
                     <div class="form-group">
-                        <input type="hidden" class="form-control bg-dark text-white" name="nik_old" value="<?= $pengunjung->NIK ?>">
+                        <input type="hidden" class="form-control bg-dark text-white" name="nik_old" value="<?= $visitor->NIK ?>">
                     </div>
                     <div class="form-group">
                         <label for="formGroupExampleInput2">Nama<span style="color: yellow;">*</span></label>
-                        <input type="text" class="form-control bg-dark text-white" name="nama" value="<?= $pengunjung->nama ?>" required>
+                        <input type="text" class="form-control bg-dark text-white" name="nama" value="<?= $visitor->nama ?>" required>
                     </div>
                     <fieldset>
                         <legend>Alamat:</legend>
                         <div class="form-group">
                             <label for="formGroupExampleInput2">Jalan<span style="color: yellow;">*</span></label>
-                            <input type="text" class="form-control bg-dark text-white" name="jalan" value="<?= $pengunjung->alamat->jalan; ?>" required>
+                            <input type="text" class="form-control bg-dark text-white" name="jalan" value="<?= $visitor->alamat->jalan; ?>" required>
                         </div>
                         <div class="form-group">
                             <label for="formGroupExampleInput2">Kota<span style="color: yellow;">*</span></label>
-                            <input type="text" class="form-control bg-dark text-white" name="kota" value="<?= $pengunjung->alamat->kota; ?>" required>
+                            <input type="text" class="form-control bg-dark text-white" name="kota" value="<?= $visitor->alamat->kota; ?>" required>
                         </div>
                         <div class="form-group">
                             <label for="formGroupExampleInput2">Kode Pos</label>
-                            <input type="text" class="form-control bg-dark text-white" name="pos" value="<?= $kodepos ?>">
+                            <input type="text" class="form-control bg-dark text-white" name="pos" value="<?= $zip ?>">
                         </div>
                     </fieldset>
                     <fieldset>
@@ -92,12 +92,12 @@ if (isset($pengunjung->pekerjaan)) {
                         </div>
                         <div class="form-group">
                             <label for="formGroupExampleInput2">No. Telp.<span style="color: yellow;">*</span></label>
-                            <input type="text" class="form-control bg-dark text-white" name="telp" value="<?= $pengunjung->kontak->phone; ?>" required>
+                            <input type="text" class="form-control bg-dark text-white" name="telp" value="<?= $visitor->kontak->phone; ?>" required>
                         </div>
                     </fieldset>
                     <div class="form-group">
                         <label for="formGroupExampleInputTelp">Pekerjaan</label>
-                        <input type="text" class="form-control bg-dark text-white" name="pekerjaan" value="<?= $pekerjaan; ?>">
+                        <input type="text" class="form-control bg-dark text-white" name="pekerjaan" value="<?= $profession; ?>">
                     </div>
                     <div class="text-center">
                         <button type='submit' name="update" class="btn btn-primary btn-lg w-100 mt-5 mb-4">Update</button>

@@ -2,11 +2,11 @@
 require '../../Database/MongodbDatabase.php';
 
 $db = new MongodbDatabase;
-$kategori = $db->getCategory();
-$collection = $db->getDataPenerbit();
+$category = $db->getCategory();
+$collection = $db->getDataPublisher();
 
 if (isset($_POST['penerbit'])) {
-    $hasil = $db->insertNewBook([
+    $result = $db->insertNewBook([
         'isbn' => $_POST['isbn'],
         'judul' => $_POST['judul'],
         'deskripsi' => $_POST['deskripsi'],
@@ -54,9 +54,9 @@ if (isset($_POST['penerbit'])) {
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div class="navbar-nav">
                     <a class="nav-item nav-link active" href="ListofBooks.php">Buku</a>
-                    <a class="nav-item nav-link" href="../Pengunjung/visitor.php">Pengunjung</a>
-                    <a class="nav-item nav-link" href="../Pinjaman/borrowes.php">Pinjaman</a>
-                    <a class="nav-item nav-link" href="../Publisher/publisher.php">Penerbit</a>
+                    <a class="nav-item nav-link" href="../Visitors/Visitors.php">Pengunjung</a>
+                    <a class="nav-item nav-link" href="../Borrowers/Borrowers.php">Pinjaman</a>
+                    <a class="nav-item nav-link" href="../Publishers/Publishers.php">Penerbit</a>
                 </div>
             </div>
         </div>
@@ -104,8 +104,8 @@ if (isset($_POST['penerbit'])) {
                         <label for="Kategori">Penerbit*</label>
                         <select class="custom-select" id="Penerbit" name="penerbit" required>
                             <?php
-                            foreach ($collection as $penerbit) {
-                                echo '<option>' . $penerbit->nama . '</option>';
+                            foreach ($collection as $publisher) {
+                                echo '<option>' . $publisher->nama . '</option>';
                             }
                             ?>
 

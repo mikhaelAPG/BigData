@@ -1,6 +1,5 @@
 <?php
 require_once '../../Database/MongodbDatabase.php';
 $db = new MongodbDatabase();
-$db->deleteVisitor();
-
-header("Location: visitor.php");
+$db->newBorrowers();
+header("Location: Borrowers.php");

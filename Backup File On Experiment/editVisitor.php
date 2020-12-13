@@ -36,7 +36,7 @@ $pengunjung = $db->getDataVisitor($_GET['nik']);
                 <div class="navbar-nav">
                     <a class="nav-item nav-link" href="../Books/ListofBooks.php">Buku</a>
                     <a class="nav-item nav-link active" href="visitor.php">Pengunjung</a>
-                    <a class="nav-item nav-link" href="../Pinjaman/borrowes.php">Pinjaman</a>
+                    <a class="nav-item nav-link" href="../Pinjaman/Borrowers.php">Pinjaman</a>
                 </div>
             </div>
         </div>

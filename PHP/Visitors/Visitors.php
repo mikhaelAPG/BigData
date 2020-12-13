@@ -15,7 +15,7 @@ $db = new MongodbDatabase;
   <link rel="stylesheet" href="../../CSS/ListofBooks.css">
   <link rel="stylesheet" href="../Font/fonts.css">
 
-  <title>Penerbit</title>
+  <title>Pengunjung</title>
 </head>
 
 <body>
@@ -32,11 +32,10 @@ $db = new MongodbDatabase;
       </button>
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
-
           <a class="nav-item nav-link" href="../Books/ListofBooks.php">Buku</a>
-          <a class="nav-item nav-link" href="../Pengunjung/visitor.php">Pengunjung</a>
-          <a class="nav-item nav-link" href="../Pinjaman/borrowes.php">Pinjaman</a>
-          <a class="nav-item nav-link active" href="publisher.php">Penerbit</a>
+          <a class="nav-item nav-link active" href="Visitors.php">Pengunjung</a>
+          <a class="nav-item nav-link" href="../Borrowers/Borrowers.php">Pinjaman</a>
+          <a class="nav-item nav-link" href="../Publishers/Publishers.php">Penerbit</a>
         </div>
       </div>
     </div>
@@ -46,28 +45,31 @@ $db = new MongodbDatabase;
     <div class="container">
       <div class="row pt-5">
         <div class="col-12 pt-3">
+          <?= Flasher::flash() ?>
           <h1 class="text-center">Pengunjung Perpustakaan</h1>
           <br><br>
         </div>
-        <a type="button" href="AddPenerbit.php" class="btn btn-outline-primary">Add</a>
+        <a type="button" href="addVisitor.php" class="btn btn-outline-primary">Add</a>
         <table class="table mt-3">
           <thead>
             <tr>
               <!-- <th scope="col">#</th> -->
+              <th scope="col">NIK</th>
               <th scope="col">Name</th>
               <th scope="col">Action</th>
             </tr>
           </thead>
           <tbody>
             <?php
-            $cursor = $db->fetchDataPublisher();
+            $cursor = $db->fetchDataVisitor();
 
             foreach ($cursor as $document) {
               echo "<tr>";
+              echo "<td>" . $document->NIK . "</td>";
               echo "<td>" . $document->nama . "</td>";
 
               echo "<td>";
-              echo "<a href='detailPublisher.php?nama=" . $document->nama . "'class='btn btn-primary'>Detail</a>";
+              echo "<a href='detailVisitor.php?nik=" . $document->NIK . "'class='btn btn-primary'>Detail</a>";
               echo "</td>";
               echo "</tr>";
             }

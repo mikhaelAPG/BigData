@@ -35,9 +35,9 @@ $collection = $db->getListBook();
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
           <a class="nav-item nav-link active" href="ListofBooks.php">Buku</a>
-          <a class="nav-item nav-link" href="../Pengunjung/visitor.php">Pengunjung</a>
-          <a class="nav-item nav-link" href="../Pinjaman/borrowes.php">Pinjaman</a>
-          <a class="nav-item nav-link" href="../Publisher/publisher.php">Penerbit</a>
+          <a class="nav-item nav-link" href="../Visitors/Visitors.php">Pengunjung</a>
+          <a class="nav-item nav-link" href="../Borrowers/Borrowers.php">Pinjaman</a>
+          <a class="nav-item nav-link" href="../Publishers/Publishers.php">Penerbit</a>
         </div>
       </div>
     </div>
@@ -65,17 +65,17 @@ $collection = $db->getListBook();
           <tbody>
             <?php
 
-            foreach ($collection as $penerbit) {
-              foreach ($penerbit->buku as $buku) {
+            foreach ($collection as $publisher) {
+              foreach ($publisher->buku as $book) {
                 echo '<tr>';
-                echo '<td>' . $buku->isbn . '</td>';
-                echo '<td>' . $buku->judul . '</td>';
+                echo '<td>' . $book->isbn . '</td>';
+                echo '<td>' . $book->judul . '</td>';
                 echo '<td><ul>';
-                foreach ($buku->penulis as $penulis) {
-                  echo "<li>" . $penulis . "</li>";
+                foreach ($book->penulis as $writer) {
+                  echo "<li>" . $writer . "</li>";
                 }
                 echo '</td></ul>';
-                echo '<td><a type="button" href= "BooksDetail.php?isbn=' . $buku->isbn . '" class="btn btn-primary btn-sm">Detail</td>';
+                echo '<td><a type="button" href= "BooksDetail.php?isbn=' . $book->isbn . '" class="btn btn-primary btn-sm">Detail</td>';
                 echo '</tr>';
               }
             }

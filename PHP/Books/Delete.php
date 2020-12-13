@@ -2,6 +2,6 @@
 require '../../Database/MongodbDatabase.php';
 $db = new MongodbDatabase;
 $isbn = $_POST['isbn'];
-$buku = $db->deleteBook($isbn);
+$book = $db->deleteBook($isbn);
 
 header("Location: ListofBooks.php");
