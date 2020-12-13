@@ -6,9 +6,11 @@ $publisher = $db->getDataPublisher($_GET['nama']);
 $location = '';
 $zip = '';
 $website = '';
-$telp = '';
+$telp = [];
 if (isset($publisher->kontak->telepon)) {
-    $telp = $publisher->kontak->telepon[0];
+    foreach ($publisher->kontak->telepon as $phone) {
+        $telp[] = $phone;
+    }
 }
 
 if (isset($publisher->kode_pos)) {
@@ -101,20 +103,22 @@ if (isset($publisher->lokasi)) {
                     </div>
                     <div class=" col-md-6 mb-3">
                         <label for="telp1">Telepon</label>
-                        <input type="number" class="form-control" id="telp1" name="telp1" value="<?= $telp; ?>">
+                        <input type="number" class="form-control" id="telp1" name="telp1" value="<?php if (isset($telp[0])) {
+                                                                                                        echo $telp[0];
+                                                                                                    } ?>">
                     </div>
-                    <?php
-                    if (isset($publisher->kontak->telepon)) :
-                        $i = 2;
-                        foreach ($publisher->kontak->telepon as $phone) :
-                    ?>
-                            <div class=" col-md-6 mb-3">
-                                <label for="telp<?= $i; ?>">Telepon <?= $i ?></label>
-                                <input type="number" class="form-control" id="telp<?= $i; ?>" name="telp<?= $i; ?>" value="<?= $phone; ?>">
-                            </div>
-                    <?php $i++;
-                        endforeach;
-                    endif; ?>
+                    <div class=" col-md-6 mb-3">
+                        <label for="telp2">Telepon 2</label>
+                        <input type="number" class="form-control" id="telp2" name="telp2" value="<?php if (isset($telp[1])) {
+                                                                                                        echo $telp[1];
+                                                                                                    } ?>">
+                    </div>
+                    <div class=" col-md-6 mb-3">
+                        <label for="telp3">Telepon 3</label>
+                        <input type="number" class="form-control" id="telp3" name="telp3" value="<?php if (isset($telp[2])) {
+                                                                                                        echo $telp[2];
+                                                                                                    } ?>">
+                    </div>
 
                     <!-- <div class="col-md-6 mb-3">
                         <label for="telp2">Telepon 2</label>

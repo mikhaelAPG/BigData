@@ -289,12 +289,30 @@ class MongodbDatabase
 
         if (isset($visitor->kontak->email) && $email == '') {
             unset($document['kontak']['email']);
+            $collection->updateOne(
+                ['NIK' => $_POST['nik_old']],
+                ['$unset' => [
+                    'kontak.$.email' => '',
+                ]]
+            );
         }
         if (isset($visitor->kontak->kode_pos) && $zip == '') {
-            unset($document['alamat']['pos']);
+            unset($document['alamat']['kode_pos']);
+            $collection->updateOne(
+                ['NIK' => $_POST['nik_old']],
+                ['$unset' => [
+                    'alamat.$.kode_pos' => '',
+                ]]
+            );
         }
         if (isset($visitor->pekerjaan) && $profession == '') {
             unset($document['pekerjaan']);
+            $collection->updateOne(
+                ['NIK' => $_POST['nik_old']],
+                ['$unset' => [
+                    'pekerjaan' => '',
+                ]]
+            );
         }
 
         $collection->updateOne(
@@ -346,18 +364,35 @@ class MongodbDatabase
             $document['kontak']['telepon'] = $phone;
         }
 
-
         $penerbit = $this->getDataPublisher($_POST['nama']);
         // var_dump($penerbit);
 
         if (isset($penerbit->lokasi) && $location == '') {
-            unset($document['kontak']['email']);
+            unset($document['lokasi']);
+            $collection->updateOne(
+                ['nama' =>  $_POST['nama']],
+                ['$unset' => [
+                    'lokasi' => '',
+                ]]
+            );
         }
         if (isset($penerbit->kode_pos) && $zip == '') {
-            unset($document['alamat']['pos']);
+            unset($document['kode_pos']);
+            $collection->updateOne(
+                ['nama' =>  $_POST['nama']],
+                ['$unset' => [
+                    'kode_pos' => '',
+                ]]
+            );
         }
         if (isset($penerbit->kontak->website) && $website == '') {
             unset($document['kontak']['website']);
+            $collection->updateOne(
+                ['nama' =>  $_POST['nama']],
+                ['$unset' => [
+                    'kontak.$.website' => '',
+                ]]
+            );
         }
 
         $collection->updateOne(
