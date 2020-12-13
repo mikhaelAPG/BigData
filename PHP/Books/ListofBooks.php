@@ -49,7 +49,7 @@ $collection = $db->getListBook();
       <h1 class="text-center">List of Books</h1>
       <br><br>
 
-      <a type="button" href="AddBooks.php?" class="btn btn-outline-primary">Add</a>
+      <a type="button" href="AddBooks.php" class="btn btn-outline-primary">Add</a>
       <div class="clear"></div>
       <?php
       echo '<div class="bagian-card" style="color:black;">';
@@ -63,7 +63,7 @@ $collection = $db->getListBook();
           echo '<h4 class="card-title card-color text-center">' . $buku->judul . '</h4>';
           echo '<p class="card-text text-center text-secondary">' . $buku->deskripsi . '</p>';
           echo '<p class="card-text text-secondary"> Kategori : <a href="BookByCategory.php?kategori=' . $buku->kategori . '"> ' . $buku->kategori . ' </a></p>';
-          echo '<a type="button" href= "BooksDetail.php?isbn=' . $buku->isbn . '" class="btn btn-primary btn-block">Detail</a>';
+          echo '<a href= "BooksDetail.php?isbn=' . $buku->isbn . '" class="btn btn-primary btn-block">Detail</a>';
           echo '</div>';
           echo '</div>';
         }

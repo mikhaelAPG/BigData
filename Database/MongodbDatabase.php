@@ -28,7 +28,6 @@ class MongodbDatabase
             ['$match' => ['buku.kategori' => $kategori]],
             ['$project' => [
                 '_id' => 1,
-                'deskripsi' => 1,
                 'buku' => ['$filter' => [
                     'input' => '$buku',
                     'as' => 'buku',
@@ -174,23 +173,42 @@ class MongodbDatabase
             return false;
         }
 
+        $collection = $this->db->Penerbit;
         $publisher = $this->getDataBookByISBN($book['isbn']);
 
         if ($publisher[0]->nama != $book['penerbit']) {
-            $this->db->Penerbit->updateOne(
+            $collection->updateOne(
                 ['nama' => $book['penerbit']],
                 ['$push' => ['buku' => [
                     'isbn' => $book['isbn'],
                 ]]]
             );
-
-            $this->db->Penerbit->updateOne(
+            $collection->updateOne(
                 ['nama' => $publisher[0]->nama],
                 ['$pull' => ['buku' => ['isbn' => $book['isbn']]]]
             );
         }
 
-        $this->db->Penerbit->updateOne(
+        $penulis = [];
+        if(isset($book['penulis1'])){
+        }
+        if(isset($book['penulis2'])){
+        }
+        if(isset($book['penulis3'])){
+        }
+        // 'img' => new MongoDB\BSON\Binary(file_get_contents($book['image']["tmp_name"]), MongoDB\BSON\Binary::TYPE_GENERIC),
+        // 'pdf' => new MongoDB\BSON\Binary(file_get_contents($book['pdf']["tmp_name"]), MongoDB\BSON\Binary::TYPE_GENERIC)
+
+        // 'penulis' => $book['penulis1'],
+        // 'penulis2' => $_POST['penulis2'],
+        // 'penulis3' => $_POST['penulis3'],
+
+        // 'alih_' => $_POST['translator'],
+        // 'kategori' => $_POST['kategori'],
+        // 'image' => $_FILES['image'],
+        // 'pdf' => $_FILES['pdf'],
+
+        $collection->updateOne(
             ['buku.isbn' => $book['isbn']],
             ['$set' => [
                 'buku.$.judul' => $book['judul'],
@@ -199,9 +217,13 @@ class MongodbDatabase
                 'buku.$.kategori' => $book['kategori']
             ]]
         );
+        
+        deskripsi
+        alih_bahasa
+        penulis [0,1,2]
 
         if ($book['deskripsi'] != null) {
-            $insert = $this->db->Penerbit->updateOne(
+            $collection->updateOne(
                 ['buku.isbn' => $book['isbn']],
                 ['$set' => [
                     'buku.$.deskripsi' => $book['deskripsi'],
@@ -210,7 +232,7 @@ class MongodbDatabase
         }
 
         if ($book['translator'] != null) {
-            $insert = $this->db->Penerbit->updateOne(
+            $collection->updateOne(
                 ['buku.isbn' => $book['isbn']],
                 ['$set' => [
                     'buku.$.alih_bahasa' => $book['translator'],

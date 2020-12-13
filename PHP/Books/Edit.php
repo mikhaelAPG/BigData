@@ -9,7 +9,7 @@ $collection = $db->fetchDataPublisher();
 
 if (!empty($_POST['judul'])) {
     $result = $db->updateBook([
-        'isbn' => $_GET['isbn'],
+        'isbn' => $isbn,
         'judul' => $_POST['judul'],
         'deskripsi' => $_POST['deskripsi'],
         'penulis1' => $_POST['penulis1'],
@@ -87,9 +87,9 @@ if (!empty($_POST['judul'])) {
                         <label for="Deskripsi">Deskripsi</label>
                         <input type="text" class="form-control" id="Deskripsi" name="deskripsi" value="
                         <?php
-                            if ($publisher[0]->buku[0]->deskripsi != null) {
-                                echo $publisher[0]->buku[0]->deskripsi;
-                            }
+                        if ($publisher[0]->buku[0]->deskripsi != null) {
+                            echo $publisher[0]->buku[0]->deskripsi;
+                        }
 
                         ?>">
                     </div>
@@ -103,9 +103,9 @@ if (!empty($_POST['judul'])) {
                         <label for="Translator">Alih Bahasa</label>
                         <input type="text" class="form-control" id="Translator" name="translator" value="
                         <?php
-                            if (isset($publisher[0]->buku[0]->alih_bahasa)) {
-                                echo $publisher[0]->buku[0]->alih_bahasa;
-                            }
+                        if (isset($publisher[0]->buku[0]->alih_bahasa)) {
+                            echo $publisher[0]->buku[0]->alih_bahasa;
+                        }
                         ?>">
                     </div>
 
