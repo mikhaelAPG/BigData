@@ -5,8 +5,6 @@ $db = new MongodbDatabase;
 $isbn = $_GET['isbn'];
 $publisher = $db->getDataBookByISBN($isbn);
 $image = base64_encode($publisher[0]->buku[0]->img->getData());
-
-
 ?>
 
 <!doctype html>
@@ -59,7 +57,7 @@ $image = base64_encode($publisher[0]->buku[0]->img->getData());
             <div class="card-body">
               <h2 class="card-title"><?= $publisher[0]->buku[0]->judul ?></h2>
               <h5><?= $publisher[0]->buku[0]->isbn ?></h5>
-              <p class="card-text"><b>Kategori:</b> <?= $publisher[0]->buku[0]->kategori ?></p>
+              <p class="card-text"><b>Kategori:</b><a href="BookByCategory.php?kategori=<?= $publisher[0]->buku[0]->kategori; ?>"> <?= $publisher[0]->buku[0]->kategori ?></a></p>
               <p class="card-text"><b>Penerbit:</b> <?= $publisher[0]->buku[0]->penerbit ?></p>
               <p class="card-text"><b>Tebal Halaman:</b> <?= $publisher[0]->buku[0]->tebal_buku ?></p>
               <p class="card-text"><b>Deskripsi:</b> <?= $publisher[0]->buku[0]->deskripsi ?></p>

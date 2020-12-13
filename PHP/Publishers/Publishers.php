@@ -46,6 +46,7 @@ $db = new MongodbDatabase;
     <div class="container">
       <div class="row pt-5">
         <div class="col-12 pt-3">
+          <?= Flasher::flash(); ?>
           <h1 class="text-center">Pengunjung Perpustakaan</h1>
           <br><br>
         </div>

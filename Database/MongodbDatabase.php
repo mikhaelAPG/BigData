@@ -22,6 +22,22 @@ class MongodbDatabase
         );
     }
 
+    public function getListBookByCategory($kategori)
+    {
+        return $this->db->Penerbit->aggregate([
+            ['$match' => ['buku.kategori' => $kategori]],
+            ['$project' => [
+                '_id' => 1,
+                'deskripsi' => 1,
+                'buku' => ['$filter' => [
+                    'input' => '$buku',
+                    'as' => 'buku',
+                    'cond' => ['$eq' => ['$$buku.kategori', $kategori]]
+                ]],
+            ]]
+        ])->toArray();
+    }
+
     public function fetchDataPublisher()
     {
         return $this->db->Penerbit->find();
@@ -59,6 +75,27 @@ class MongodbDatabase
             $penulis[] = $book['penulis3'];
         }
 
+        $availableImage = ['jpeg', 'jpg', 'png'];
+        $availableFile = ['pdf'];
+
+        $typeImage = strtolower($_FILES['image']['type']);
+        $typeImage = explode('/', $typeImage);
+        $typeImage = end($typeImage);
+
+        $typeFile = strtolower($_FILES['pdf']['type']);
+        $typeFile = explode('/', $typeFile);
+        $typeFile = end($typeFile);
+
+        if (!in_array($typeImage, $availableImage)) {
+            Flasher::setFlash('Format file gambar (gunakan JPEG, PNG, JPG) tidak dapat ', 'ditambahkan', 'danger');
+            return false;
+        }
+
+        if (!in_array($typeFile, $availableFile)) {
+            Flasher::setFlash('Format file (gunakan PDF) tidak dapat ', 'ditambahkan', 'danger');
+            return false;
+        }
+
         $document = [
             'isbn' => $book['isbn'],
             'judul' => $book['judul'],
@@ -93,29 +130,42 @@ class MongodbDatabase
             return false;
         }
 
+        $phone = [];
+
         $document = [
             'nama' => $publisher['nama'],
             'jalan' => $publisher['jalan'],
             'kota' => $publisher['kota'],
-            'email' => $publisher['email'],
+            'kontak' => [
+                'email' => $publisher['email']
+            ]
         ];
 
         if ($publisher['lokasi'] != '') {
             $document['lokasi'] = $publisher['lokasi'];
         }
-        if ($publisher['telepon'] != '') {
-            $document['telepon'] = $publisher['telepon'];
-        }
         if ($publisher['kode_pos'] != '') {
             $document['kode_pos'] = $publisher['kode_pos'];
         }
         if ($publisher['website'] != '') {
-            $document['website'] = $publisher['website'];
+            $document['kontak']['website'] = $publisher['website'];
+        }
+        if ($publisher['telepon'] != '') {
+            $phone[] = $publisher['telepon'];
+        }
+        if ($publisher['telepon2'] != '') {
+            $phone[] = $publisher['telepon2'];
+        }
+        if ($publisher['telepon3'] != '') {
+            $phone[] = $publisher['telepon3'];
+        }
+        if (!empty($phone)) {
+            $document['kontak']['telepon'] = $phone;
         }
 
-        $insert = $this->db->Penerbit->insertOne($document);
+        $this->db->Penerbit->insertOne($document);
 
-        return 'Berhasil Masuk!';
+        Flasher::setFlash('Data penerbit berhasil', 'ditambahkan', 'success');
     }
 
     public function updateBook($book = [])
@@ -193,11 +243,11 @@ class MongodbDatabase
         );
     }
 
-    public function getDataPublisher()
+    public function getDataPublisher($nama)
     {
-        return $this->db->Penerbit->findOne(['nama' => $_GET['nama']]);
+        return $this->db->Penerbit->findOne(['nama' => $nama]);
     }
-    
+
     //============================================================================================================================
     //Operasi Visitor
     //============================================================================================================================
@@ -253,6 +303,69 @@ class MongodbDatabase
         );
 
         Flasher::setFlash('Data ' . $visitor->nama . ' berhasil', "diupdate", "success");
+    }
+
+    public function editPublisher()
+    {
+        $collection = $this->db->Penerbit;
+
+        $location = str_replace(' ', '', $_POST['lokasi']);
+        $zip = str_replace(' ', '', $_POST['kode_pos']);
+        $website = str_replace(' ', '', $_POST['website']);
+        $phone = [];
+
+        $document = [
+            'nama' => $_POST['nama'],
+            'jalan' => $_POST['jalan'],
+            'kota' => $_POST['kota'],
+            'kontak' => [
+                'email' => $_POST['email']
+            ]
+        ];
+
+        if ($location != '') {
+            $document['lokasi'] = $_POST['lokasi'];
+        }
+        if ($zip != '') {
+            $document['kode_pos'] = $_POST['kode_pos'];
+        }
+        if ($website != '') {
+            $document['kontak']['website'] = $_POST['website'];
+        }
+
+        if ($_POST['telp1'] != '') {
+            $phone[] = $_POST['telp1'];
+        }
+        if ($_POST['telp2'] != '') {
+            $phone[] = $_POST['telp2'];
+        }
+        if ($_POST['telp3'] != '') {
+            $phone[] = $_POST['telp3'];
+        }
+        if (!empty($phone)) {
+            $document['kontak']['telepon'] = $phone;
+        }
+
+
+        $penerbit = $this->getDataPublisher($_POST['nama']);
+        // var_dump($penerbit);
+
+        if (isset($penerbit->lokasi) && $location == '') {
+            unset($document['kontak']['email']);
+        }
+        if (isset($penerbit->kode_pos) && $zip == '') {
+            unset($document['alamat']['pos']);
+        }
+        if (isset($penerbit->kontak->website) && $website == '') {
+            unset($document['kontak']['website']);
+        }
+
+        $collection->updateOne(
+            ['nama' =>  $_POST['nama']],
+            ['$set' => $document]
+        );
+
+        Flasher::setFlash('Data ' . $penerbit->nama . ' berhasil', "diupdate", "success");
     }
 
     public function getDataVisitor($nik)

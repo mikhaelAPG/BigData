@@ -1,21 +1,24 @@
 <?php
 require '../../Database/MongodbDatabase.php';
-
 $db = new MongodbDatabase;
-if (isset($_POST['nama'])) {
-    $hasil = $db->insertPublisher([
-        'nama' => $_POST['nama'],
-        'jalan' => $_POST['jalan'],
-        'kode_pos' => $_POST['kode_pos'],
-        'website' => $_POST['website'],
-        'lokasi' => $_POST['lokasi'],
-        'kota' => $_POST['kota'],
-        'telepon' => $_POST['telp'],
-        'telepon2' => $_POST['telp2'],
-        'telepon3' => $_POST['telp3'],
-        'email' => $_POST['email'],
-    ]);
-    header("Location: Publishers.php");
+$publisher = $db->getDataPublisher($_GET['nama']);
+
+$location = '';
+$zip = '';
+$website = '';
+$telp = '';
+if (isset($publisher->kontak->telepon)) {
+    $telp = $publisher->kontak->telepon[0];
+}
+
+if (isset($publisher->kode_pos)) {
+    $zip = $publisher->kode_pos;
+}
+if (isset($publisher->kontak->website)) {
+    $website = $publisher->kontak->website;
+}
+if (isset($publisher->lokasi)) {
+    $location = $publisher->lokasi;
 }
 
 ?>
@@ -33,7 +36,7 @@ if (isset($_POST['nama'])) {
     <link rel="stylesheet" href="../../CSS/ListofBooks.css">
     <link rel="stylesheet" href="../Font/fonts.css">
 
-    <title>Add Penerbit</title>
+    <title>Edit Penerbit</title>
 </head>
 
 <body>
@@ -60,63 +63,69 @@ if (isset($_POST['nama'])) {
 
     <section>
         <div class="container">
-            <form name="formCreate" action="AddPenerbit.php" method="POST">
+            <form name="formCreate" action="Edit.php" method="POST">
                 <div class="row">
                     <div class="col-sm-12 py-2">
-                        <h3>
-                            <b3>Tambah Penerbit</b3>
-                        </h3>
+                        <h3><b>Edit Penerbit <?= $publisher->nama ?></b></h3>
                     </div>
-                    <div class="col-md-6 mb-3">
-                        <label for="nama">Nama*</label>
-                        <input type="text" class="form-control" id="nama" name="nama" required>
-                    </div>
+                    <input type="hidden" class="form-control" id="nama" name="nama" value="<?= $publisher->nama ?>" required>
 
                     <div class="col-md-6 mb-3">
                         <label for="lokasi">Lokasi</label>
-                        <input type="text" class="form-control" id="lokasi" name="lokasi">
+                        <input type="text" class="form-control" id="lokasi" name="lokasi" value="<?= $location ?>">
                     </div>
 
-                    <div class="col-md-6 mb-3">
+                    <div class=" col-md-6 mb-3">
                         <label for="jln">Jalan*</label>
-                        <input type="text" class="form-control" id="jln" name="jalan" required>
+                        <input type="text" class="form-control" id="jln" name="jalan" value="<?= $publisher->jalan ?>" required>
                     </div>
 
-                    <div class="col-md-6 mb-3">
+                    <div class=" col-md-6 mb-3">
                         <label for="kota">Kota*</label>
-                        <input type="text" class="form-control" id="kota" name="kota" required>
+                        <input type="text" class="form-control" id="kota" name="kota" value="<?= $publisher->kota ?>" required>
                     </div>
 
-                    <div class="col-md-6 mb-3">
+                    <div class=" col-md-6 mb-3">
                         <label for="pos">Kode Pos</label>
-                        <input type="number" class="form-control" id="pos" name="kode_pos">
-                    </div>
-
-
-                    <div class="col-md-6 mb-3">
-                        <label for="telp">Telepon</label>
-                        <input type="number" class="form-control" id="telp" name="telp">
-                    </div>
-
-                    <div class="col-md-6 mb-3">
-                        <label for="web">Website</label>
-                        <input type="text" class="form-control" id="web" name="website">
+                        <input type="number" class="form-control" id="pos" name="kode_pos" value="<?= $zip ?>">
                     </div>
 
                     <div class="col-md-6 mb-3">
                         <label for="email">Email*</label>
-                        <input type="email" class="form-control" id="email" name="email" required>
+                        <input type="email" class="form-control" id="email" name="email" value="<?= $publisher->kontak->email ?>" required>
                     </div>
+
                     <div class="col-md-6 mb-3">
+                        <label for="web">Website</label>
+                        <input type="text" class="form-control" id="web" name="website" value="<?= $website ?>">
+                    </div>
+                    <div class=" col-md-6 mb-3">
+                        <label for="telp1">Telepon</label>
+                        <input type="number" class="form-control" id="telp1" name="telp1" value="<?= $telp; ?>">
+                    </div>
+                    <?php
+                    if (isset($publisher->kontak->telepon)) :
+                        $i = 2;
+                        foreach ($publisher->kontak->telepon as $phone) :
+                    ?>
+                            <div class=" col-md-6 mb-3">
+                                <label for="telp<?= $i; ?>">Telepon <?= $i ?></label>
+                                <input type="number" class="form-control" id="telp<?= $i; ?>" name="telp<?= $i; ?>" value="<?= $phone; ?>">
+                            </div>
+                    <?php $i++;
+                        endforeach;
+                    endif; ?>
+
+                    <!-- <div class="col-md-6 mb-3">
                         <label for="telp2">Telepon 2</label>
                         <input type="number" class="form-control" id="telp2" name="telp2">
                     </div>
                     <div class="col-md-6 mb-3">
                         <label for="telp3">Telepon 3</label>
                         <input type="number" class="form-control" id="telp3" name="telp3">
-                    </div>
+                    </div> -->
                 </div>
-                <button class="btn btn-primary" style="float: right;margin-left: 20px" type="submit">Add</button>
+                <button class="btn btn-primary" style="float: right;margin-left: 20px" type="submit">Edit</button>
             </form>
 
         </div>

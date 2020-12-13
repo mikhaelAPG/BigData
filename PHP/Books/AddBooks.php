@@ -3,7 +3,7 @@ require '../../Database/MongodbDatabase.php';
 
 $db = new MongodbDatabase;
 $category = $db->getCategory();
-$collection = $db->getDataPublisher();
+$collection = $db->fetchDataPublisher();
 
 if (isset($_POST['penerbit'])) {
     $result = $db->insertNewBook([

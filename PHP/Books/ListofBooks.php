@@ -45,45 +45,32 @@ $collection = $db->getListBook();
 
   <section>
     <div class="container">
-      <div class="row pt-5">
-        <div class="col-12 pt-3">
-          <?= Flasher::flash(); ?>
-          <h1 class="text-center">List of Books</h1>
-          <br><br>
-        </div>
+      <?= Flasher::flash(); ?>
+      <h1 class="text-center">List of Books</h1>
+      <br><br>
 
-        <a type="button" href="AddBooks.php" class="btn btn-outline-primary">Add</a>
-        <table class="table mt-3">
-          <thead>
-            <tr>
-              <th scope="col">ISBN</th>
-              <th scope="col">Judul</th>
-              <th scope="col">Penulis</th>
-              <th scope="col">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            <?php
-
-            foreach ($collection as $publisher) {
-              foreach ($publisher->buku as $book) {
-                echo '<tr>';
-                echo '<td>' . $book->isbn . '</td>';
-                echo '<td>' . $book->judul . '</td>';
-                echo '<td><ul>';
-                foreach ($book->penulis as $writer) {
-                  echo "<li>" . $writer . "</li>";
-                }
-                echo '</td></ul>';
-                echo '<td><a type="button" href= "BooksDetail.php?isbn=' . $book->isbn . '" class="btn btn-primary btn-sm">Detail</td>';
-                echo '</tr>';
-              }
-            }
-            ?>
-          </tbody>
-        </table>
-      </div>
-    </div>
+      <a type="button" href="AddBooks.php?" class="btn btn-outline-primary">Add</a>
+      <div class="clear"></div>
+      <?php
+      echo '<div class="bagian-card" style="color:black;">';
+      foreach ($collection as $penerbit) {
+        foreach ($penerbit->buku as $buku) {
+      ?>
+          <div class="card mt-2 mb-2" style="width: 20rem;float:left;margin-right:20px;height: 30rem;">
+            <img class="card-img-top" src="data:jpeg;base64,<?= base64_encode($buku->img->getData()) ?>" alt="Card image cap" style="height: 15rem;">
+            <div class="card-body">
+          <?php
+          echo '<h4 class="card-title card-color text-center">' . $buku->judul . '</h4>';
+          echo '<p class="card-text text-center text-secondary">' . $buku->deskripsi . '</p>';
+          echo '<p class="card-text text-secondary"> Kategori : <a href="BookByCategory.php?kategori=' . $buku->kategori . '"> ' . $buku->kategori . ' </a></p>';
+          echo '<a type="button" href= "BooksDetail.php?isbn=' . $buku->isbn . '" class="btn btn-primary btn-block">Detail</a>';
+          echo '</div>';
+          echo '</div>';
+        }
+      }
+          ?>
+            </div>
+          </div>
   </section>
 
   <!-- Optional JavaScript; choose one of the two! -->

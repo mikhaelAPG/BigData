@@ -34,7 +34,7 @@ $publisher = $db->getDataPublisher($_GET['nama']);
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div class="navbar-nav">
                     <a class="nav-item nav-link" href="../Books/ListofBooks.php">Buku</a>
-                    <a class="nav-item nav-link" href="../Visitor/Visitors.php">Pengunjung</a>
+                    <a class="nav-item nav-link" href="../Visitors/Visitors.php">Pengunjung</a>
                     <a class="nav-item nav-link" href="../Borrowers/Borrowers.php">Pinjaman</a>
                     <a class="nav-item nav-link active" href="Publishers.php">Publisher</a>
                 </div>
@@ -74,37 +74,50 @@ $publisher = $db->getDataPublisher($_GET['nama']);
                         ?>
                     </tr>
                     <tr>
-                        <th scope="col">Website</th>
+                        <th scope="col">Contact</th>
                         <?php
                         echo "<td><ul>";
+                        if (isset($publisher->kontak->telepon)) {
+                            $i = 1;
+                            foreach ($publisher->kontak->telepon as $phone) {
+                                echo "<li>Num " . $i . ": " . $phone . "</li>";
+                                $i++;
+                            }
+                        }
+                        echo "<li>Email: " . $publisher->kontak->email . "</li>";
                         if (isset($publisher->kontak->website)) {
-                            echo "<li>" . $publisher->kontak->website . "</li>";
+                            echo "<li>Web: " . $publisher->kontak->website . "</li>";
                         }
                         echo "</ul></td>";
                         ?>
                     </tr>
                     <tr>
                         <td colspan="3">
-                            <a href='editVisitor.php?nik=<?= $publisher->nama; ?>' class='btn btn-primary'>Edit</a>
-                            <a href='delete.php?nik=<?= $publisher->nama; ?>' class='btn btn-danger ml-3'>Delete</a><br>
+                            <a href='EditView.php?nama=<?= $publisher->nama; ?>' class='btn btn-primary'>Edit</a>
                         </td>
                     </tr>
                 </table>
 
                 <h2>Buku Penerbit</h2>
                 <table class="table mt-3 table-borderless">
-
+                    <tr>
+                        <th>No</th>
+                        <th>Judul</th>
+                        <th>ISBN</th>
+                        <th>Detail</th>
+                    </tr>
                     <?php
-                    $cursor = $db->getListBook();
                     $i = 0;
-
-                    if (isset($cursor)) :
+                    if (isset($publisher->buku)) :
                         foreach ($publisher->buku as $book) :
                             $i++;
                     ?>
                             <hr>
                             <tr>
-                                <td><?= $i . ". " . $book->judul ?></td>
+                                <td><?= $i; ?></td>
+                                <td><?= $book->judul ?></td>
+                                <td><?= $book->isbn ?></td>
+                                <td><a type="button" href="../Books/BooksDetail.php?isbn=<?= $book->isbn ?>" class="btn btn-primary">Detail</a></td>
                             </tr>
                         <?php
                         endforeach;
