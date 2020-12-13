@@ -1,0 +1,70 @@
+
+/*	Navigation	*/
+.nav {
+	float:right;
+	width: 40%;
+	height: 8%;
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+    font-size: 1rem;
+    padding-top: 1%;
+}
+
+.nav ul {
+	float: right;
+	font-size: 80%;
+	color: white;
+	display: inline-block;
+	list-style-type: none;
+	align-items: center;
+	margin-right: 2%;
+	padding-left: 1%;
+    width: 120%;
+}
+
+.nav ul li {
+	float: right;
+	font-size: 150%;
+    width: 20%;
+}
+
+.nav ul li a {
+	margin-right: 20%;
+	color: white;
+	display: block;
+    text-decoration: none;
+}
+
+.nav ul li a:hover .textnav {
+    transition: all 1s;
+    transform: scale(1.5);
+    color: white;
+}
+
+/*	Top Logo	*/
+.logo {
+	float:left;
+	padding-top: 0.5%;
+	margin-left: 4%;
+	width: 10%;
+	height: 30%;
+	align-items: center;
+	font-size: 2vw;
+	padding-right: 0;
+}
+
+.logo a {
+	width: 100%;
+	height: 170%;
+	background: url('../Multimedia/Images/Intro/logo-background.png');
+	background-size:cover;
+	font-family: variane;
+	font-size:75%;
+	color: rgb(36, 36, 36);
+	display: block;
+	text-decoration: none;
+	transition: all 1s;
+}
+
+.logo a:hover {
+	transform: scale(1.5);
+}
