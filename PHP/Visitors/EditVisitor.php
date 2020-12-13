@@ -61,7 +61,7 @@ if (isset($visitor->pekerjaan)) {
             <a type="button" href="detailVisitor.php?nik=<?= $visitor->NIK ?>" class="btn btn-outline-secondary">Back</a>
             <div class="col-12 pt-3">
                 <h1 class="text-center mb-5">Edit Visitor Data</h1>
-                <form class="w-50 ml-auto mr-auto" action="edit.php" method="POST">
+                <form class="w-50 ml-auto mr-auto" action="Edit.php" method="POST">
                     <div class="form-group">
                         <input type="hidden" class="form-control bg-dark text-white" name="nik_old" value="<?= $visitor->NIK ?>">
                     </div>

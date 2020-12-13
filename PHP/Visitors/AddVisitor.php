@@ -38,10 +38,10 @@
     </nav>
     <div class="container">
         <div class="row pt-5">
-            <a type="button" href="visitor.php" class="btn btn-outline-warning">Back</a>
+            <a type="button" href="Visitors.php" class="btn btn-outline-warning">Back</a>
             <div class="col-12 pt-3">
                 <h1 class="text-center mb-5">Tambah Pengunjung</h1>
-                <form class="w-50 ml-auto mr-auto" action="create_visitor.php" method="POST">
+                <form class="w-50 ml-auto mr-auto" action="CreateVisitor.php" method="POST">
                     <div class="form-group">
                         <label for="formGroupExampleInputNIK">NIK<span style="color: yellow;">*</span></label>
                         <input type="text" class="form-control bg-dark text-white" name="nik" required>

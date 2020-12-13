@@ -25,6 +25,19 @@ if (!empty($_POST['judul'])) {
     header("Location: ListofBooks.php");
 }
 
+$isbn = $publisher[0]->buku[0]->isbn;
+$judul = $publisher[0]->buku[0]->judul;
+$tebalBuku = $publisher[0]->buku[0]->tebal_buku;
+$penerbit = $publisher[0]->nama;
+$kategori = $publisher[0]->buku[0]->kategori;
+$deskripsi = "";
+$alih_bahasa = "";
+if (isset($publisher[0]->buku[0]->deskripsi)) {
+    $deskripsi = $publisher[0]->buku[0]->deskripsi;
+}
+if (isset($publisher[0]->buku[0]->alih_bahasa)) {
+    $alih_bahasa = $publisher[0]->buku[0]->alih_bahasa;
+}
 ?>
 <!doctype html>
 <html lang="en">
@@ -66,72 +79,36 @@ if (!empty($_POST['judul'])) {
 
     <section>
         <div class="container">
-            <form name="formCreate" action="Edit.php?isbn=<?php echo $isbn ?>" method="POST">
+            <form name="formCreate" action="Edit.php?isbn=<?= $isbn ?>" method="POST">
                 <div class="row">
-                    <!-- <div class="col-sm-12 py-2">
-                        <h5>Tambah Buku</h5>
-                        <a type="button" href= "AddCategory.php" class="btn btn-outline-primary">Tambah Kategori</a>
-                    </div> -->
-
                     <div class="col-md-6 mb-3">
                         <label for="ISBN">ISBN*</label>
-                        <input type="text" class="form-control" id="ISBN" name="isbn" disabled value="<?php echo $publisher[0]->buku[0]->isbn ?>" required>
+                        <input type="text" class="form-control" id="ISBN" name="isbn" disabled value="<?= $isbn; ?>" required>
                     </div>
 
                     <div class="col-md-6 mb-3">
                         <label for="Judul">Judul*</label>
-                        <input type="text" class="form-control" id="Judul" name="judul" value="<?php echo $publisher[0]->buku[0]->judul ?>" required>
+                        <input type="text" class="form-control" id="Judul" name="judul" value="<?= $judul; ?>" required>
                     </div>
 
                     <div class="col-md-6 mb-3">
                         <label for="Deskripsi">Deskripsi</label>
-                        <input type="text" class="form-control" id="Deskripsi" name="deskripsi" value="
-                        <?php
-                        if ($publisher[0]->buku[0]->deskripsi != null) {
-                            echo $publisher[0]->buku[0]->deskripsi;
-                        }
-
-                        ?>">
-                    </div>
-
-                    <div class="col-md-6 mb-3">
-                        <label for="image">Image</label>
-                        <input type="file" class="form-control" id="image" name="image">
+                        <textarea class="form-control" id="Deskripsi" name="deskripsi"><?= $deskripsi; ?></textarea>
                     </div>
 
                     <div class="col-md-6 mb-3">
                         <label for="Translator">Alih Bahasa</label>
-                        <input type="text" class="form-control" id="Translator" name="translator" value="
-                        <?php
-                        if (isset($publisher[0]->buku[0]->alih_bahasa)) {
-                            echo $publisher[0]->buku[0]->alih_bahasa;
-                        }
-                        ?>">
+                        <input type="text" class="form-control" id="Translator" name="translator" value=<?= $alih_bahasa; ?>>
                     </div>
 
                     <div class="col-md-6 mb-3">
                         <label for="Tbl">Tebal Buku*</label>
-                        <input type="number" class="form-control" id="Tbl" name="tbl" value="<?php echo $publisher[0]->buku[0]->tebal_buku ?>" required>
+                        <input type="number" class="form-control" id="Tbl" name="tbl" value="<?= $tebalBuku; ?>" required>
                     </div>
 
                     <div class="col-md-3 mb-3">
-                        <label for="Kategori">Penerbit*</label>
-                        <select class="custom-select" id="Penerbit" name="penerbit" required>
-                            <option value="<?php echo $publisher[0]->nama ?>"><?php echo $publisher[0]->nama ?></option>
-                            <?php
-                            foreach ($collection as $publish) {
-                                echo '<option>' . $ppublish->nama . '</option>';
-                            }
-                            ?>
-                        </select>
-                    </div>
-                    <div class="col-md-3 mb-3">
                         <label for="Kategori">Kategori*</label>
-                        <input type="text" class="form-control" id="kategori" name="kategori" value="<?php echo $publisher[0]->buku[0]->kategori ?>" required>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <label for="pdf">PDF</label>
-                        <input type="file" class="form-control" id="pdf" name="pdf">
+                        <input type="text" class="form-control" id="kategori" name="kategori" value="<?= $kategori; ?>" required>
                     </div>
                     <?php $i = 1;
                     foreach ($publisher[0]->buku[0]->penulis as $writer) : ?>

@@ -64,7 +64,7 @@ if (isset($_POST['nama'])) {
                 <div class="row">
                     <div class="col-sm-12 py-2">
                         <h3>
-                            <b3>Tambah Penerbit</b3>
+                            <b>Tambah Penerbit</b>
                         </h3>
                     </div>
                     <div class="col-md-6 mb-3">

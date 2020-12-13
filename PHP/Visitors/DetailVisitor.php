@@ -49,7 +49,7 @@ $visitor = $db->getDataVisitor($_GET['nik']);
                     <h1 class="text-center">Detail Pengunjung</h1>
                     <br><br>
                 </div>
-                <a type="button" href="visitor.php" class="btn btn-outline-warning">Back</a>
+                <a type="button" href="Visitors.php" class="btn btn-outline-warning">Back</a>
                 <div class="table-responsive">
                     <table class="table mt-3 mx-auto w-auto">
                         <tr>
@@ -99,8 +99,8 @@ $visitor = $db->getDataVisitor($_GET['nik']);
                         <?php endif; ?>
                         <tr>
                             <td colspan="3">
-                                <a href='editVisitor.php?nik=<?= $visitor->NIK; ?>' class='btn btn-primary'>Edit</a>
-                                <a href='delete.php?nik=<?= $visitor->NIK; ?>' class='btn btn-danger ml-3'>Delete</a><br>
+                                <a href='EditVisitor.php?nik=<?= $visitor->NIK; ?>' class='btn btn-primary'>Edit</a>
+                                <a href='Delete.php?nik=<?= $visitor->NIK; ?>' class='btn btn-danger ml-3'>Delete</a><br>
                             </td>
                         </tr>
                     </table>

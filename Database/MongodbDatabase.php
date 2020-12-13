@@ -58,6 +58,14 @@ class MongodbDatabase
         ])->toArray();
     }
 
+    public function validasiFile($file)
+    {
+        $type = strtolower($file);
+        $type = explode('/', $type);
+        $type = end($type);
+        return $type;
+    }
+
     public function insertNewBook($book = [])
     {
         if (empty($book)) {
@@ -76,14 +84,8 @@ class MongodbDatabase
 
         $availableImage = ['jpeg', 'jpg', 'png'];
         $availableFile = ['pdf'];
-
-        $typeImage = strtolower($_FILES['image']['type']);
-        $typeImage = explode('/', $typeImage);
-        $typeImage = end($typeImage);
-
-        $typeFile = strtolower($_FILES['pdf']['type']);
-        $typeFile = explode('/', $typeFile);
-        $typeFile = end($typeFile);
+        $typeImage = $this->validasiFile($_FILES['image']['type']);
+        $typeFile = $this->validasiFile($_FILES['pdf']['type']);
 
         if (!in_array($typeImage, $availableImage)) {
             Flasher::setFlash('Format file gambar (gunakan JPEG, PNG, JPG) tidak dapat ', 'ditambahkan', 'danger');
@@ -189,40 +191,61 @@ class MongodbDatabase
             );
         }
 
-        $penulis = [];
-        if(isset($book['penulis1'])){
+        $pengarang = [];
+        if (isset($book['penulis1'])) {
+            $pengarang[] = $book['penulis1'];
         }
-        if(isset($book['penulis2'])){
+        if (isset($book['penulis2'])) {
+            $pengarang[] = $book['penulis2'];
         }
-        if(isset($book['penulis3'])){
+        if (isset($book['penulis3'])) {
+            $pengarang[] = $book['penulis3'];
         }
-        // 'img' => new MongoDB\BSON\Binary(file_get_contents($book['image']["tmp_name"]), MongoDB\BSON\Binary::TYPE_GENERIC),
-        // 'pdf' => new MongoDB\BSON\Binary(file_get_contents($book['pdf']["tmp_name"]), MongoDB\BSON\Binary::TYPE_GENERIC)
 
-        // 'penulis' => $book['penulis1'],
-        // 'penulis2' => $_POST['penulis2'],
-        // 'penulis3' => $_POST['penulis3'],
+        $alih_bahasa = $publisher[0]->buku[0]->alih_bahasa;
+        $deskripsi = $publisher[0]->buku[0]->deskripsi;
 
-        // 'alih_' => $_POST['translator'],
-        // 'kategori' => $_POST['kategori'],
-        // 'image' => $_FILES['image'],
-        // 'pdf' => $_FILES['pdf'],
+        if ($book['image'] != '') {
+            $collection->updateOne(
+                ['buku.isbn' => $book['isbn']],
+                ['$unset' => [
+                    'buku.$.img' => ''
+                ]]
+            );
+            $collection->updateOne(
+                ['buku.isbn' => $book['isbn']],
+                ['$set' => [
+                    'buku.$.img' => new MongoDB\BSON\Binary(file_get_contents($book['image']["tmp_name"]), MongoDB\BSON\Binary::TYPE_GENERIC)
+                ]]
+            );
+        }
+
+        if ($book['pdf'] != '') {
+            $collection->updateOne(
+                ['buku.isbn' => $book['isbn']],
+                ['$unset' => [
+                    'buku.$.img' => ''
+                ]]
+            );
+            $collection->updateOne(
+                ['buku.isbn' => $book['isbn']],
+                ['$set' => [
+                    'buku.$.pdf' => new MongoDB\BSON\Binary(file_get_contents($book['pdf']["tmp_name"]), MongoDB\BSON\Binary::TYPE_GENERIC)
+                ]]
+            );
+        }
 
         $collection->updateOne(
             ['buku.isbn' => $book['isbn']],
             ['$set' => [
                 'buku.$.judul' => $book['judul'],
-                'buku.$.penulis' => [$book['penulis']],
+                'buku.$.penulis' => $pengarang,
                 'buku.$.tebal_buku' => $book['tbl'],
                 'buku.$.kategori' => $book['kategori']
             ]]
         );
-        
-        deskripsi
-        alih_bahasa
-        penulis [0,1,2]
 
-        if ($book['deskripsi'] != null) {
+        if ($book['deskripsi'] != '') {
             $collection->updateOne(
                 ['buku.isbn' => $book['isbn']],
                 ['$set' => [
@@ -231,11 +254,31 @@ class MongodbDatabase
             );
         }
 
-        if ($book['translator'] != null) {
+        if ($book['translator'] != '') {
             $collection->updateOne(
                 ['buku.isbn' => $book['isbn']],
                 ['$set' => [
                     'buku.$.alih_bahasa' => $book['translator'],
+                ]]
+            );
+        }
+
+        $alih_bahasa = $publisher[0]->buku[0]->alih_bahasa;
+        $deskripsi = $publisher[0]->buku[0]->deskripsi;
+
+        if (isset($alih_bahasa) && $book['alih_bahasa']) {
+            $collection->updateOne(
+                ['buku.isbn' => $book['isbn']],
+                ['$unset' => [
+                    'buku.$.alih_bahasa' => '',
+                ]]
+            );
+        }
+        if (isset($deskripsi) && $book['deskripsi']) {
+            $collection->updateOne(
+                ['buku.isbn' => $book['isbn']],
+                ['$unset' => [
+                    'buku.$.deskripsi' => '',
                 ]]
             );
         }
@@ -309,24 +352,6 @@ class MongodbDatabase
 
         $visitor = $this->getDataVisitor($_POST['nik_old']);
 
-        if (isset($visitor->kontak->email) && $email == '') {
-            unset($document['kontak']['email']);
-            $collection->updateOne(
-                ['NIK' => $_POST['nik_old']],
-                ['$unset' => [
-                    'kontak.$.email' => '',
-                ]]
-            );
-        }
-        if (isset($visitor->kontak->kode_pos) && $zip == '') {
-            unset($document['alamat']['kode_pos']);
-            $collection->updateOne(
-                ['NIK' => $_POST['nik_old']],
-                ['$unset' => [
-                    'alamat.$.kode_pos' => '',
-                ]]
-            );
-        }
         if (isset($visitor->pekerjaan) && $profession == '') {
             unset($document['pekerjaan']);
             $collection->updateOne(

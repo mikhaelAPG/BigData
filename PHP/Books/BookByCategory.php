@@ -60,10 +60,11 @@ $collection = $db->getListBookByCategory($kategori);
                         <img class="card-img-top" src="data:jpeg;base64,<?= base64_encode($buku->img->getData()) ?>" alt="Card image cap" style="height: 15rem;">
                         <div class="card-body">
                     <?php
-                    echo '<h4 class="card-title card-color text-center">' . $buku->judul . '</h4>';
-                    echo '<p class="card-text text-center text-secondary">' . $buku->deskripsi . '</p>';
+                    echo '<h4 class="card-title card-color text-center"><a href="BooksDetail.php?isbn=' . $buku->isbn . '">' . $buku->judul . '</a></h4>';
+                    if (isset($buku->deskripsi)) {
+                        echo '<p class="card-text text-center text-secondary">' . $buku->deskripsi . '</p>';
+                    }
                     echo '<p class="card-text text-secondary"> Kategori : <a href="BookByCategory.php?kategori=' . $buku->kategori . '"> ' . $buku->kategori . ' </a></p>';
-                    echo '<a type="button" href= "BooksDetail.php?isbn=' . $buku->isbn . '" class="btn btn-primary btn-block">Detail</a>';
                     echo '</div>';
                     echo '</div>';
                 }
