@@ -13,14 +13,9 @@ if (!empty($_POST['judul'])) {
         'judul' => $_POST['judul'],
         'deskripsi' => $_POST['deskripsi'],
         'penulis1' => $_POST['penulis1'],
-        'penulis2' => $_POST['penulis2'],
-        'penulis3' => $_POST['penulis3'],
         'translator' => $_POST['translator'],
         'tbl' => $_POST['tbl'],
-        'penerbit' => $_POST['penerbit'],
-        'kategori' => $_POST['kategori'],
-        'image' => $_FILES['image'],
-        'pdf' => $_FILES['pdf']
+        'kategori' => $_POST['kategori']
     ]);
     header("Location: ListofBooks.php");
 }

@@ -63,7 +63,9 @@ $image = base64_encode($publisher[0]->buku[0]->img->getData());
               <?php if (isset($publisher[0]->buku[0]->deskripsi)) : ?>
                 <p class="card-text"><b>Deskripsi:</b> <?= $publisher[0]->buku[0]->deskripsi ?></p>
               <?php endif; ?>
-              <p class="card-text"><b>Alih bahasa:</b> <?= $publisher[0]->buku[0]->alih_bahasa ?></p>
+              <?php if (isset($publisher[0]->buku[0]->alih_bahasa)) : ?>
+                <p class="card-text"><b>Alih bahasa:</b> <?= $publisher[0]->buku[0]->alih_bahasa ?></p>
+              <?php endif; ?>
               <?php if (count($publisher[0]->buku[0]->penulis) == 1) :  ?>
                 <p class="card-text"><b>Penulis:</b> <?= $publisher[0]->buku[0]->penulis[0]; ?></p>
               <?php else : ?>

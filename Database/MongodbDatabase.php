@@ -178,61 +178,13 @@ class MongodbDatabase
         $collection = $this->db->Penerbit;
         $publisher = $this->getDataBookByISBN($book['isbn']);
 
-        if ($publisher[0]->nama != $book['penerbit']) {
-            $collection->updateOne(
-                ['nama' => $book['penerbit']],
-                ['$push' => ['buku' => [
-                    'isbn' => $book['isbn'],
-                ]]]
-            );
-            $collection->updateOne(
-                ['nama' => $publisher[0]->nama],
-                ['$pull' => ['buku' => ['isbn' => $book['isbn']]]]
-            );
-        }
-
         $pengarang = [];
-        if (isset($book['penulis1'])) {
-            $pengarang[] = $book['penulis1'];
+        $pengarang[] = $book['penulis1'];
+        if (isset($_POST['penulis2'])) {
+            $pengarang[] = $_POST['penulis2'];
         }
-        if (isset($book['penulis2'])) {
-            $pengarang[] = $book['penulis2'];
-        }
-        if (isset($book['penulis3'])) {
-            $pengarang[] = $book['penulis3'];
-        }
-
-        $alih_bahasa = $publisher[0]->buku[0]->alih_bahasa;
-        $deskripsi = $publisher[0]->buku[0]->deskripsi;
-
-        if ($book['image'] != '') {
-            $collection->updateOne(
-                ['buku.isbn' => $book['isbn']],
-                ['$unset' => [
-                    'buku.$.img' => ''
-                ]]
-            );
-            $collection->updateOne(
-                ['buku.isbn' => $book['isbn']],
-                ['$set' => [
-                    'buku.$.img' => new MongoDB\BSON\Binary(file_get_contents($book['image']["tmp_name"]), MongoDB\BSON\Binary::TYPE_GENERIC)
-                ]]
-            );
-        }
-
-        if ($book['pdf'] != '') {
-            $collection->updateOne(
-                ['buku.isbn' => $book['isbn']],
-                ['$unset' => [
-                    'buku.$.img' => ''
-                ]]
-            );
-            $collection->updateOne(
-                ['buku.isbn' => $book['isbn']],
-                ['$set' => [
-                    'buku.$.pdf' => new MongoDB\BSON\Binary(file_get_contents($book['pdf']["tmp_name"]), MongoDB\BSON\Binary::TYPE_GENERIC)
-                ]]
-            );
+        if (isset($_POST['penulis3'])) {
+            $pengarang[] = $_POST['penulis3'];
         }
 
         $collection->updateOne(
@@ -245,7 +197,10 @@ class MongodbDatabase
             ]]
         );
 
-        if ($book['deskripsi'] != '') {
+        $desc = str_replace(' ', '', $book['deskripsi']);
+        $translator = str_replace(' ', '', $book['translator']);
+
+        if ($desc != '') {
             $collection->updateOne(
                 ['buku.isbn' => $book['isbn']],
                 ['$set' => [
@@ -254,7 +209,7 @@ class MongodbDatabase
             );
         }
 
-        if ($book['translator'] != '') {
+        if ($translator != '') {
             $collection->updateOne(
                 ['buku.isbn' => $book['isbn']],
                 ['$set' => [
@@ -266,7 +221,7 @@ class MongodbDatabase
         $alih_bahasa = $publisher[0]->buku[0]->alih_bahasa;
         $deskripsi = $publisher[0]->buku[0]->deskripsi;
 
-        if (isset($alih_bahasa) && $book['alih_bahasa']) {
+        if (isset($alih_bahasa) && $translator == '') {
             $collection->updateOne(
                 ['buku.isbn' => $book['isbn']],
                 ['$unset' => [
@@ -274,7 +229,7 @@ class MongodbDatabase
                 ]]
             );
         }
-        if (isset($deskripsi) && $book['deskripsi']) {
+        if (isset($deskripsi) && $desc == '') {
             $collection->updateOne(
                 ['buku.isbn' => $book['isbn']],
                 ['$unset' => [
@@ -434,12 +389,6 @@ class MongodbDatabase
         }
         if (isset($penerbit->kontak->website) && $website == '') {
             unset($document['kontak']['website']);
-            $collection->updateOne(
-                ['nama' =>  $_POST['nama']],
-                ['$unset' => [
-                    'kontak.$.website' => '',
-                ]]
-            );
         }
 
         $collection->updateOne(
